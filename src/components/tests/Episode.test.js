@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Episode from './../Episode';
+import { getByAltText, getByText, render, screen } from '@testing-library/react';
+import Episode from '../Episode';
 
 const testEpisode = {
     id:1,
@@ -8,8 +8,18 @@ const testEpisode = {
     image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
     season: 1,
     number: 1,
-    summary: "",
+    summary: "A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest.",
     runtime: 1
+}
+
+const testEpisode2 = {
+    id:2,
+    name: "",
+    image: null,
+    season: 2,
+    number: 2,
+    summary: "A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest.",
+    runtime: 2
 }
 
 const testEpisodeWithoutImage = {
@@ -17,14 +27,24 @@ const testEpisodeWithoutImage = {
 }
 
 test("renders without error", () => {
+    render(<Episode episode={testEpisode}/>)
 
-});
+}); 
 
 test("renders the summury test passed as prop", ()=>{
+    const { getByText } = render(<Episode episode={testEpisode}/>)
+    const summary = getByText(/A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest./i);
+
+    expect(summary).toBeInTheDocument();
     
 });
 
 test("renders default image when image is not defined", ()=>{
+    const { getByAltText }= render(<Episode episode={testEpisode2}/>)
+
+    const img = getByAltText(/stranger_things.png/i)
+
+    expect(img).toHaveAttribute('src','./stranger_things.png')
     
 })
 
